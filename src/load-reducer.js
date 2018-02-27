@@ -2,8 +2,9 @@ const React = require('react');
 const PropTypes = require('prop-types');
 
 const injectReducer = (store, key, reducer, epic) => {
-  if (Object.hasOwnProperty.call(store.rootReducers(), key)) return;
-  store.replaceReducer(store.rootReducers({[key]: reducer}));
+  if (Object.hasOwnProperty.call(store.asyncReducer, key)) return;
+  store.asyncReducer[key] = reducer;
+  store.replaceReducer(store.rootReducers(store.asyncReducer));
 
   if (epic && store.epics) {
       store.epics.next(epic);
