@@ -72,3 +72,6 @@ The package is looking for exports named epic and reducer, so your exported redu
   export const reducer = someReducer;
   export const epic = combineEpics(localEpicOne, localEpicTwo);
  ```
+
+
+For usage with for example api calls check [Injecting Dependencies Into Epics](https://redux-observable.js.org/docs/recipes/InjectingDependenciesIntoEpics.html)
