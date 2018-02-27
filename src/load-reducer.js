@@ -19,7 +19,7 @@ const injectReducer = (store, key, reducer, epic) => {
  *
  */
 export const LoadReducer = (moduleProvider, key) => (WrappedComponent) => {
-  class ReducerInjector extends React.PureComponent {
+  class ReducerInjector extends React.Component {
     static contextTypes = {
       store: PropTypes.object.isRequired
     };
