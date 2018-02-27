@@ -1,10 +1,13 @@
 const React = require('react');
 const PropTypes = require('prop-types');
 
-const injectReducer = (store, key, reducer) => {
-  if (Object.hasOwnProperty.call(store.asyncReducers, key)) return;
-  store.asyncReducers[key] = reducer; // eslint-disable-line
-  store.replaceReducer(store.rootReducers(store.asyncReducers));
+const injectReducer = (store, key, reducer, epic) => {
+  if (Object.hasOwnProperty.call(store.rootReducers(), key)) return;
+  store.replaceReducer(store.rootReducers({[key]: reducer}));
+
+  if (epic && store.epics) {
+      store.epics.next(epic);
+  }
 };
 
 
@@ -30,19 +33,11 @@ export const LoadReducer = (moduleProvider, key) => (WrappedComponent) => {
       };
     }
 
-    componentWillMount() {
-      if (!this.state.Component) {
+    async componentWillMount() {
+      const {reducer, epic} = await moduleProvider();
+      injectReducer(this.context.store, key, reducer, epic);
 
-        moduleProvider().then(({reducer, epic}) => {
-          injectReducer(this.context.store, key, reducer);
-
-          if (epic && this.context.store.epics) {
-            this.context.store.epics.next(epic);
-          }
-          this.setState({ loaded: true });
-
-        });
-      }
+      this.setState({ loaded: true });
     }
 
     render() {
