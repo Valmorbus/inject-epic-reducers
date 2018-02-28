@@ -79,7 +79,7 @@ Once configurations are in place, simply annotate your class with:
 ```
 import { LoadReducer } from 'inject-epic-reducers';
 
-@LoadReducer(()=> import(/* webpackChunkName: 'reducername' */) './path', 'reducerKey')
+@LoadReducer(()=> import(/* webpackChunkName: 'reducername' */ './path'), 'reducerKey')
 export class MyClass extends React.Component {...stuff}
 
 ```
