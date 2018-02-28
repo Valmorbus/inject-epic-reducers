@@ -73,5 +73,16 @@ The package is looking for exports named epic and reducer, so your exported redu
   export const epic = combineEpics(localEpicOne, localEpicTwo);
  ```
 
+### How to use 
+
+Once configurations are in place, simply annotate your class with: 
+```
+import { LoadReducer } from 'inject-epic-reducers';
+
+@LoadReducer(()=> import(/* webpackChunkName: 'reducername' */) './path', 'reducerKey')
+export class MyClass extends React.Component {...stuff}
+
+```
+
 
 For usage with for example api calls check [Injecting Dependencies Into Epics](https://redux-observable.js.org/docs/recipes/InjectingDependenciesIntoEpics.html)
