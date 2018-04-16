@@ -1,4 +1,8 @@
 {
   "presets": ["@babel/env", "@babel/react", "@babel/flow", "@babel/preset-stage-3"],
-  "plugins": ["syntax-dynamic-import", "transform-class-properties"]
+  "plugins": [
+    "syntax-dynamic-import",
+    "transform-class-properties",
+    "@babel/transform-runtime"
+  ]
 }

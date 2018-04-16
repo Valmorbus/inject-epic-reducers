@@ -1,10 +1,14 @@
 const React = require('react');
 const PropTypes = require('prop-types');
 
-const injectReducer = (store, key, reducer) => {
-  if (Object.hasOwnProperty.call(store.asyncReducers, key)) return;
-  store.asyncReducers[key] = reducer; // eslint-disable-line
-  store.replaceReducer(store.rootReducers(store.asyncReducers));
+const injectReducer = (store, key, reducer, epic) => {
+  if (Object.hasOwnProperty.call(store.asyncReducer, key)) return;
+  store.asyncReducer[key] = reducer;
+  store.replaceReducer(store.rootReducers(store.asyncReducer));
+
+  if (epic && store.epics) {
+      store.epics.next(epic);
+  }
 };
 
 
@@ -16,7 +20,7 @@ const injectReducer = (store, key, reducer) => {
  *
  */
 export const LoadReducer = (moduleProvider, key) => (WrappedComponent) => {
-  class ReducerInjector extends React.PureComponent {
+  class ReducerInjector extends React.Component {
     static contextTypes = {
       store: PropTypes.object.isRequired
     };
@@ -30,19 +34,11 @@ export const LoadReducer = (moduleProvider, key) => (WrappedComponent) => {
       };
     }
 
-    componentWillMount() {
-      if (!this.state.Component) {
+    async componentWillMount() {
+      const {reducer, epic} = await moduleProvider();
+      injectReducer(this.context.store, key, reducer, epic);
 
-        moduleProvider().then(({reducer, epic}) => {
-          injectReducer(this.context.store, key, reducer);
-
-          if (epic && this.context.store.epics) {
-            this.context.store.epics.next(epic);
-          }
-          this.setState({ loaded: true });
-
-        });
-      }
+      this.setState({ loaded: true });
     }
 
     render() {
