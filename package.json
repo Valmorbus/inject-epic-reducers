@@ -1,11 +1,9 @@
 {
   "name": "inject-epic-reducers",
-  "version": "1.0.0",
+  "version": "0.4.0",
   "description": "A simple loader for epics and reducers",
   "main": "lib/index.js",
   "files": [
-    "babel.js",
-    "webpack.js",
     "lib/**"
   ],
   "author": "Simon Borgström",
